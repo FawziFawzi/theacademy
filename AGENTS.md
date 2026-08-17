@@ -28,7 +28,7 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 
 ### Phase 1 — Setup (§2)
 - [x] **T1 — Project setup**: install `laravel/breeze` (blade), `npm install && npm run build`, require `barryvdh/laravel-dompdf`. Verify app boots. (Skip `stripe/stripe-php` — deferred to T13.)
-- [ ] **T2 — Enums (§3)**: all 8 backed enums in `app/Enums/` with `label()`: UserRole, OrganizationStatus, CourseStatus, BillingInterval, SubscriptionStatus, TransactionType, TransactionStatus, InvoiceStatus.
+- [x] **T2 — Enums (§3)**: all 8 backed enums in `app/Enums/` with `label()`: UserRole, OrganizationStatus, CourseStatus, BillingInterval, SubscriptionStatus, TransactionType, TransactionStatus, InvoiceStatus.
 
 ### Phase 2 — Domain foundation (§4, §5, §6)
 - [ ] **T3 — Migrations (§4)**: 9 migrations in FK order (organizations → users → courses → plans → plan_course → subscriptions → transactions → invoices → audit_logs), enum-backed string columns.
@@ -64,4 +64,5 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | Task | Status | Date |
 |------|--------|------|
 | T1 | complete | 2026-08-16 |
-| T2–T15 | not started | — |
+| T2 | complete | 2026-08-16 |
+| T3–T15 | not started | — |
