@@ -43,7 +43,7 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 - [x] **T8 — Controllers + Form Requests + routes (§9.4)**: one thin controller + Form Request per resource, resource routes, tenancy-safe. Controllers type-hint service interfaces and resolve models via scoped `find()` (404 outside org scope); services expose `all()`/`find()` passthroughs. Minimal stub views added so routes render (full theme is T10/T11).
 
 ### Phase 5 — Auth & roles (§10)
-- [ ] **T9 — Auth & roles**: custom `EnsureUserHasRole` middleware, role-guarded route groups, `/` root serves the login page.
+- [x] **T9 — Auth & roles**: custom `EnsureUserHasRole` middleware, role-guarded route groups, `/` root serves the login page.
 
 ### Phase 6 — Frontend (§11)
 - [ ] **T10 — Theme & layout (§11)**: `theme.css` tokens, master `layouts/app.blade.php` (logo, nav, avatar dropdown, footer), wordmark + mountain-icon logos, dark login page as `/`.
@@ -71,3 +71,4 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | T6 | complete | 2026-08-16 |
 | T7 | complete | 2026-08-16 |
 | T8 | complete | 2026-08-18 |
+| T9 | complete | 2026-08-18 |
