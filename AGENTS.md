@@ -36,8 +36,8 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 - [x] **T5 — Factories (§6)**: OrganizationFactory, UserFactory (+ `systemAdmin`/`orgAdmin`/`teacher`/`student` states), CourseFactory, PlanFactory, SubscriptionFactory (+ trialing/canceled/pastDue), TransactionFactory (+ failed), InvoiceFactory, AuditLogFactory.
 
 ### Phase 3 — Service + Repository layer (§9)
-- [ ] **T6 — Repositories (§9)**: interfaces in `Repositories/Contracts/`, Eloquent impls in `Repositories/Eloquent/` for all 8 resources, DI bindings in `AppServiceProvider`. Repository enforces tenancy scoping.
-- [ ] **T7 — Services (§9)**: thin Services in migration order (Organization → User → Course → Plan → Transaction → Invoice → AuditLog), then SubscriptionService with cross-service orchestration (creates transaction + audit log).
+- [x] **T6 — Repositories (§9)**: interfaces in `Repositories/Contracts/`, Eloquent impls in `Repositories/Eloquent/` for all 8 resources, DI bindings in `AppServiceProvider`. Repository enforces tenancy scoping (via `Repositories/TenantContext` — org-scoped for org users, unscoped for `system_admin`/CLI; subscriptions/transactions/invoices scope through their plan's org).
+- [x] **T7 — Services (§9)**: thin Services in migration order (Organization → User → Course → Plan → Transaction → Invoice → AuditLog), then SubscriptionService with cross-service orchestration (creates transaction + invoice + audit log). Services implement interfaces in `Services/Contracts/` (one per service), cross-service deps type-hint interfaces (SubscriptionService → TransactionServiceInterface/AuditLogServiceInterface, TransactionService → InvoiceServiceInterface), all bound in `AppServiceProvider`.
 
 ### Phase 4 — HTTP layer (§9.4)
 - [ ] **T8 — Controllers + Form Requests + routes**: one thin controller + Form Request per resource, resource routes, tenancy-safe.
@@ -68,4 +68,6 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | T3 | complete | 2026-08-16 |
 | T4 | complete | 2026-08-16 |
 | T5 | complete | 2026-08-16 |
-| T6–T15 | not started | — |
+| T6 | complete | 2026-08-16 |
+| T7 | complete | 2026-08-16 |
+| T8–T15 | not started | — |
