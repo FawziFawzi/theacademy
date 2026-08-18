@@ -11,6 +11,7 @@ use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Services\Contracts\AuditLogServiceInterface;
 use App\Services\Contracts\SubscriptionServiceInterface;
 use App\Services\Contracts\TransactionServiceInterface;
+use Illuminate\Support\Collection;
 
 class SubscriptionService implements SubscriptionServiceInterface
 {
@@ -19,6 +20,16 @@ class SubscriptionService implements SubscriptionServiceInterface
         private readonly TransactionServiceInterface $transactions,
         private readonly AuditLogServiceInterface $auditLog,
     ) {}
+
+    public function all(): Collection
+    {
+        return $this->subscriptions->all();
+    }
+
+    public function find(int $id): ?Subscription
+    {
+        return $this->subscriptions->find($id);
+    }
 
     public function subscribe(User $user, Plan $plan): Subscription
     {

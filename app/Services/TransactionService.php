@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionRepositoryInterface;
 use App\Services\Contracts\InvoiceServiceInterface;
 use App\Services\Contracts\TransactionServiceInterface;
+use Illuminate\Support\Collection;
 
 class TransactionService implements TransactionServiceInterface
 {
@@ -16,6 +17,16 @@ class TransactionService implements TransactionServiceInterface
         private readonly TransactionRepositoryInterface $transactions,
         private readonly InvoiceServiceInterface $invoices,
     ) {}
+
+    public function all(): Collection
+    {
+        return $this->transactions->all();
+    }
+
+    public function find(int $id): ?Transaction
+    {
+        return $this->transactions->find($id);
+    }
 
     public function recordSubscriptionPayment(Subscription $subscription, float $amount): Transaction
     {

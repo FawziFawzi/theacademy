@@ -7,10 +7,16 @@ use App\Models\User;
 use App\Repositories\Contracts\AuditLogRepositoryInterface;
 use App\Services\Contracts\AuditLogServiceInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class AuditLogService implements AuditLogServiceInterface
 {
     public function __construct(private readonly AuditLogRepositoryInterface $auditLogs) {}
+
+    public function all(): Collection
+    {
+        return $this->auditLogs->all();
+    }
 
     public function record(
         ?User $user,

@@ -40,7 +40,7 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 - [x] **T7 — Services (§9)**: thin Services in migration order (Organization → User → Course → Plan → Transaction → Invoice → AuditLog), then SubscriptionService with cross-service orchestration (creates transaction + invoice + audit log). Services implement interfaces in `Services/Contracts/` (one per service), cross-service deps type-hint interfaces (SubscriptionService → TransactionServiceInterface/AuditLogServiceInterface, TransactionService → InvoiceServiceInterface), all bound in `AppServiceProvider`.
 
 ### Phase 4 — HTTP layer (§9.4)
-- [ ] **T8 — Controllers + Form Requests + routes**: one thin controller + Form Request per resource, resource routes, tenancy-safe.
+- [x] **T8 — Controllers + Form Requests + routes (§9.4)**: one thin controller + Form Request per resource, resource routes, tenancy-safe. Controllers type-hint service interfaces and resolve models via scoped `find()` (404 outside org scope); services expose `all()`/`find()` passthroughs. Minimal stub views added so routes render (full theme is T10/T11).
 
 ### Phase 5 — Auth & roles (§10)
 - [ ] **T9 — Auth & roles**: custom `EnsureUserHasRole` middleware, role-guarded route groups, `/` root serves the login page.
@@ -70,4 +70,4 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | T5 | complete | 2026-08-16 |
 | T6 | complete | 2026-08-16 |
 | T7 | complete | 2026-08-16 |
-| T8–T15 | not started | — |
+| T8 | complete | 2026-08-18 |

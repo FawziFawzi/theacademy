@@ -5,10 +5,21 @@ namespace App\Services;
 use App\Models\Organization;
 use App\Repositories\Contracts\OrganizationRepositoryInterface;
 use App\Services\Contracts\OrganizationServiceInterface;
+use Illuminate\Support\Collection;
 
 class OrganizationService implements OrganizationServiceInterface
 {
     public function __construct(private readonly OrganizationRepositoryInterface $organizations) {}
+
+    public function all(): Collection
+    {
+        return $this->organizations->all();
+    }
+
+    public function find(int $id): ?Organization
+    {
+        return $this->organizations->find($id);
+    }
 
     public function create(array $data): Organization
     {
