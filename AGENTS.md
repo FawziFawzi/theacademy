@@ -31,9 +31,9 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 - [x] **T2 — Enums (§3)**: all 8 backed enums in `app/Enums/` with `label()`: UserRole, OrganizationStatus, CourseStatus, BillingInterval, SubscriptionStatus, TransactionType, TransactionStatus, InvoiceStatus.
 
 ### Phase 2 — Domain foundation (§4, §5, §6)
-- [ ] **T3 — Migrations (§4)**: 9 migrations in FK order (organizations → users → courses → plans → plan_course → subscriptions → transactions → invoices → audit_logs), enum-backed string columns.
-- [ ] **T4 — Models (§5)**: 8 models with relationships, enum `casts()`, tenancy scopes; enforce `organization_id` null ⇔ `system_admin` via model boot.
-- [ ] **T5 — Factories (§6)**: OrganizationFactory, UserFactory (+ `systemAdmin`/`orgAdmin`/`teacher`/`student` states), CourseFactory, PlanFactory, SubscriptionFactory (+ trialing/canceled/pastDue), TransactionFactory (+ failed), InvoiceFactory, AuditLogFactory.
+- [x] **T3 — Migrations (§4)**: 9 migrations in FK order (organizations → users → courses → plans → plan_course → subscriptions → transactions → invoices → audit_logs), enum-backed string columns. Note: `users.role` defaults to `student` (Breeze registration creates users without a role).
+- [x] **T4 — Models (§5)**: 8 models with relationships, enum `casts()`, tenancy scopes; enforce `organization_id` null ⇔ `system_admin` via model boot. Note: enforcement triggers on explicit `role` changes (`isDirty('role')`) — Breeze registration creates role-less users, so registered users keep DB-default `student` + null org until T9 wires org assignment into registration.
+- [x] **T5 — Factories (§6)**: OrganizationFactory, UserFactory (+ `systemAdmin`/`orgAdmin`/`teacher`/`student` states), CourseFactory, PlanFactory, SubscriptionFactory (+ trialing/canceled/pastDue), TransactionFactory (+ failed), InvoiceFactory, AuditLogFactory.
 
 ### Phase 3 — Service + Repository layer (§9)
 - [ ] **T6 — Repositories (§9)**: interfaces in `Repositories/Contracts/`, Eloquent impls in `Repositories/Eloquent/` for all 8 resources, DI bindings in `AppServiceProvider`. Repository enforces tenancy scoping.
@@ -65,4 +65,7 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 |------|--------|------|
 | T1 | complete | 2026-08-16 |
 | T2 | complete | 2026-08-16 |
-| T3–T15 | not started | — |
+| T3 | complete | 2026-08-16 |
+| T4 | complete | 2026-08-16 |
+| T5 | complete | 2026-08-16 |
+| T6–T15 | not started | — |
