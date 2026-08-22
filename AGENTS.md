@@ -46,8 +46,8 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 - [x] **T9 — Auth & roles**: custom `EnsureUserHasRole` middleware, role-guarded route groups, `/` root serves the login page.
 
 ### Phase 6 — Frontend (§11)
-- [ ] **T10 — Theme & layout (§11)**: `theme.css` tokens, master `layouts/app.blade.php` (logo, nav, avatar dropdown, footer), wordmark + mountain-icon logos, dark login page as `/`.
-- [ ] **T11 — Role views**: role-specific view folders (`admin/`, `org-admin/`, `teacher/`, `student/`) extending the master layout; status pills with leading dot; tabular-nums for numeric data.
+- [x] **T10 — Theme & layout (§11)**: `theme.css` tokens, master `layouts/app.blade.php` (logo, nav, avatar dropdown, footer), wordmark + mountain-icon logos, dark login page as `/`.
+- [x] **T11 — Role views**: role-specific view folders (`admin/`, `org-admin/`, `teacher/`, `student/`) extending the master layout; status pills with leading dot; tabular-nums for numeric data.
 
 ### Phase 7 — Data (§7)
 - [ ] **T12 — Seeders (§7)**: DatabaseSeeder orchestration via Services (system_admin, orgs, per-org users/courses/plans/subscriptions/transactions/invoices, audit logs); re-runnable via `migrate:fresh --seed`.
@@ -72,3 +72,5 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | T7 | complete | 2026-08-16 |
 | T8 | complete | 2026-08-18 |
 | T9 | complete | 2026-08-18 |
+| T10 | complete | 2026-08-22 |
+| T11 | complete | 2026-08-22 |

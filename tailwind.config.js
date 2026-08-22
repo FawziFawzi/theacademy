@@ -12,7 +12,34 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                display: ['Manrope', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                canvas: 'var(--color-bg)',
+                surface: {
+                    DEFAULT: 'var(--color-surface)',
+                    raised: 'var(--color-surface-raised)',
+                },
+                accent: {
+                    DEFAULT: 'var(--color-accent)',
+                    hover: 'var(--color-accent-hover)',
+                    soft: 'var(--color-accent-soft)',
+                },
+                ink: {
+                    DEFAULT: 'var(--color-text)',
+                    muted: 'var(--color-text-muted)',
+                },
+                line: 'var(--color-border)',
+                danger: 'var(--color-danger)',
+                warning: 'var(--color-warning)',
+            },
+            borderRadius: {
+                card: 'var(--radius-card)',
+                pill: 'var(--radius-pill)',
+            },
+            boxShadow: {
+                card: 'var(--shadow-card)',
             },
         },
     },

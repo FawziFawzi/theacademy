@@ -1,11 +1,47 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>Subscription #{{ $subscription->id }}</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="page-title">Subscription #<span class="tabular-nums">{{ $subscription->id }}</span></h2>
+            <x-status-pill :status="$subscription->status" />
+        </div>
     </x-slot>
 
-    <p>Plan: {{ $subscription->plan?->name }}</p>
-    <p>Status: {{ $subscription->status->label() }}</p>
-    <p>Period: {{ $subscription->current_period_start?->toDateString() }} → {{ $subscription->current_period_end?->toDateString() }}</p>
+    <div class="grid lg:grid-cols-2 gap-6">
+        <div class="card p-6">
+            <h3 class="section-heading mb-4">Details</h3>
+            <dl class="space-y-3 text-sm">
+                <div class="flex justify-between"><dt class="label">Plan</dt><dd class="font-medium text-ink">{{ $subscription->plan?->name ?? '—' }}</dd></div>
+                <div class="flex justify-between"><dt class="label">Price</dt><dd class="tabular-nums font-medium">${{ number_format($subscription->plan?->price ?? 0, 2) }}</dd></div>
+                <div class="flex justify-between"><dt class="label">Student</dt><dd class="text-ink">{{ $subscription->user?->name }}</dd></div>
+                <div class="flex justify-between"><dt class="label">Status</dt><dd><x-status-pill :status="$subscription->status" /></dd></div>
+                <div class="flex justify-between"><dt class="label">Period</dt><dd class="tabular-nums text-ink-muted">{{ $subscription->current_period_start?->format('Y-m-d') }} → {{ $subscription->current_period_end?->format('Y-m-d') }}</dd></div>
+            </dl>
+            <div class="flex items-center gap-3 mt-6">
+                <a href="{{ route('subscriptions.index') }}" class="btn btn-tertiary">Back</a>
+                @if(in_array($subscription->status->value, ['active','trialing']))
+                    <form method="POST" action="{{ route('subscriptions.cancel', $subscription) }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                @endif
+            </div>
+        </div>
 
-    <p><a href="{{ route('subscriptions.index') }}">Back</a></p>
+        <div class="card p-6">
+            <h3 class="section-heading mb-4">Invoices</h3>
+            @if($subscription->transactions?->isEmpty())
+                <p class="text-sm text-ink-muted">No transactions yet</p>
+            @else
+                <ul class="space-y-2">
+                    @foreach($subscription->transactions as $tx)
+                        <li class="flex items-center justify-between p-3 rounded-card bg-surface-raised border border-line">
+                            <span class="tabular-nums font-medium">#{{ $tx->id }}</span>
+                            <span class="tabular-nums">${{ number_format($tx->amount, 2) }}</span>
+                            <x-status-pill :status="$tx->status" />
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
+    </div>
 </x-app-layout>
