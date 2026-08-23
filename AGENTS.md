@@ -50,7 +50,7 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 - [x] **T11 — Role views**: role-specific view folders (`admin/`, `org-admin/`, `teacher/`, `student/`) extending the master layout; status pills with leading dot; tabular-nums for numeric data.
 
 ### Phase 7 — Data (§7)
-- [ ] **T12 — Seeders (§7)**: DatabaseSeeder orchestration via Services (system_admin, orgs, per-org users/courses/plans/subscriptions/transactions/invoices, audit logs); re-runnable via `migrate:fresh --seed`.
+- [x] **T12 — Seeders (§7)**: DatabaseSeeder orchestration via Services (system_admin, orgs, per-org users/courses/plans/subscriptions/transactions/invoices, audit logs); re-runnable via `migrate:fresh --seed`.
 
 ### Phase 8 — Payments & PDFs (§2)
 - [ ] **T13 — PDF invoices**: dompdf invoice generation wired to completed transactions.
@@ -74,3 +74,4 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | T9 | complete | 2026-08-18 |
 | T10 | complete | 2026-08-22 |
 | T11 | complete | 2026-08-22 |
+| T12 | complete | 2026-08-23 |
