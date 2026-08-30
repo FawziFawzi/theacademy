@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('transactions', TransactionController::class)->only(['index', 'show']);
         Route::resource('invoices', InvoiceController::class)->only(['index', 'show']);
+        Route::get('invoices/{invoice}/pdf', [InvoiceController::class, 'download'])->name('invoices.pdf');
         Route::resource('audit-logs', AuditLogController::class)->only(['index']);
     });
 

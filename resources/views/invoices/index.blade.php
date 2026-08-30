@@ -12,6 +12,7 @@
                         <th class="text-left font-medium px-5 py-3">Transaction</th>
                         <th class="text-left font-medium px-5 py-3">Status</th>
                         <th class="text-right font-medium px-5 py-3">Date</th>
+                        <th class="text-right font-medium px-5 py-3">PDF</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-line">
@@ -21,9 +22,16 @@
                             <td class="px-5 py-3 tabular-nums text-ink-muted">#{{ $invoice->transaction_id }}</td>
                             <td class="px-5 py-3"><x-status-pill :status="$invoice->status" /></td>
                             <td class="px-5 py-3 text-right tabular-nums text-ink-muted whitespace-nowrap">{{ $invoice->created_at?->format('Y-m-d') }}</td>
+                            <td class="px-5 py-3 text-right">
+                                @if($invoice->pdf_path)
+                                    <a href="{{ route('invoices.pdf', $invoice) }}" class="text-xs font-medium text-accent hover:text-accent-hover underline underline-offset-4">Download</a>
+                                @else
+                                    <span class="text-xs text-ink-muted">—</span>
+                                @endif
+                            </td>
                         </tr>
                     @empty
-                        <tr><td colspan="4" class="px-5 py-8 text-center text-ink-muted">No invoices found</td></tr>
+                        <tr><td colspan="5" class="px-5 py-8 text-center text-ink-muted">No invoices found</td></tr>
                     @endforelse
                 </tbody>
             </table>

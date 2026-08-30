@@ -28,8 +28,11 @@
                 </div>
             @endif
         </dl>
-        <div class="mt-6">
+        <div class="flex items-center gap-3 mt-6">
             <a href="{{ route('invoices.index') }}" class="btn btn-tertiary">Back</a>
+            @if($invoice->pdf_path)
+                <a href="{{ route('invoices.pdf', $invoice) }}" class="btn btn-primary">Download PDF</a>
+            @endif
         </div>
     </div>
 </x-app-layout>

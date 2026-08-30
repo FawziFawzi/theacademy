@@ -21,6 +21,7 @@ use App\Repositories\Eloquent\EloquentUserRepository;
 use App\Services\AuditLogService;
 use App\Services\Contracts\AuditLogServiceInterface;
 use App\Services\Contracts\CourseServiceInterface;
+use App\Services\Contracts\InvoicePdfServiceInterface;
 use App\Services\Contracts\InvoiceServiceInterface;
 use App\Services\Contracts\OrganizationServiceInterface;
 use App\Services\Contracts\PlanServiceInterface;
@@ -28,6 +29,7 @@ use App\Services\Contracts\SubscriptionServiceInterface;
 use App\Services\Contracts\TransactionServiceInterface;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\CourseService;
+use App\Services\InvoicePdfService;
 use App\Services\InvoiceService;
 use App\Services\OrganizationService;
 use App\Services\PlanService;
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SubscriptionServiceInterface::class, SubscriptionService::class);
         $this->app->bind(TransactionServiceInterface::class, TransactionService::class);
         $this->app->bind(InvoiceServiceInterface::class, InvoiceService::class);
+        $this->app->bind(InvoicePdfServiceInterface::class, InvoicePdfService::class);
         $this->app->bind(AuditLogServiceInterface::class, AuditLogService::class);
     }
 

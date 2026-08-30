@@ -7,12 +7,16 @@ use App\Enums\TransactionStatus;
 use App\Models\Invoice;
 use App\Models\Transaction;
 use App\Repositories\Contracts\InvoiceRepositoryInterface;
+use App\Services\Contracts\InvoicePdfServiceInterface;
 use App\Services\Contracts\InvoiceServiceInterface;
 use Illuminate\Support\Collection;
 
 class InvoiceService implements InvoiceServiceInterface
 {
-    public function __construct(private readonly InvoiceRepositoryInterface $invoices) {}
+    public function __construct(
+        private readonly InvoiceRepositoryInterface $invoices,
+        private readonly InvoicePdfServiceInterface $pdfService,
+    ) {}
 
     public function all(): Collection
     {
@@ -30,11 +34,19 @@ class InvoiceService implements InvoiceServiceInterface
             ? InvoiceStatus::Paid
             : InvoiceStatus::Pending;
 
-        return $this->invoices->create([
+        $invoice = $this->invoices->create([
             'transaction_id' => $transaction->id,
             'pdf_path' => null,
             'status' => $status,
         ]);
+
+        // Wire PDF generation to completed transactions (T13)
+        if ($transaction->status === TransactionStatus::Completed) {
+            $this->pdfService->configure()->generate($invoice);
+            $invoice->refresh();
+        }
+
+        return $invoice;
     }
 
     public function updateStatus(Invoice $invoice, InvoiceStatus $status): Invoice

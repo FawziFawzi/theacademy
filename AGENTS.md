@@ -53,7 +53,7 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 - [x] **T12 — Seeders (§7)**: DatabaseSeeder orchestration via Services (system_admin, orgs, per-org users/courses/plans/subscriptions/transactions/invoices, audit logs); re-runnable via `migrate:fresh --seed`.
 
 ### Phase 8 — Payments & PDFs (§2)
-- [ ] **T13 — PDF invoices**: dompdf invoice generation wired to completed transactions.
+- [x] **T13 — PDF invoices**: dompdf invoice generation wired to completed transactions.
 - [ ] **T14 — Stripe integration**: `stripe/stripe-php`, checkout + webhook with 3-attempt retry (deferred until after everything above is reviewed).
 
 ### Phase 9 — Verification (§12)
@@ -75,3 +75,4 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | T10 | complete | 2026-08-22 |
 | T11 | complete | 2026-08-22 |
 | T12 | complete | 2026-08-23 |
+| T13 | complete | 2026-08-23 |
