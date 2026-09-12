@@ -5,6 +5,8 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PaymentCheckoutController;
+use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
@@ -43,7 +45,16 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:org_admin,student')->group(function () {
         Route::resource('subscriptions', SubscriptionController::class)->only(['index', 'create', 'store', 'show']);
         Route::post('subscriptions/{subscription}/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+        Route::post('payment/checkout/{plan}', [PaymentCheckoutController::class, 'checkout'])->name('payment.checkout');
+        Route::get('payment/success', function () {
+            return redirect()->route('subscriptions.index')->with('status', 'Payment completed. Webhook will confirm shortly.');
+        })->name('payment.success');
+        Route::get('payment/cancel', function () {
+            return redirect()->route('subscriptions.index')->with('status', 'Payment canceled.');
+        })->name('payment.cancel');
     });
 });
+
+Route::post('payment/webhook', [PaymentWebhookController::class, 'handle'])->name('payment.webhook');
 
 require __DIR__.'/auth.php';

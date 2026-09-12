@@ -2,6 +2,7 @@
 
 namespace App\Services\Contracts;
 
+use App\DTOs\PaymentEventResult;
 use App\Enums\SubscriptionStatus;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -19,4 +20,10 @@ interface SubscriptionServiceInterface
     public function cancel(User $user, Subscription $subscription): Subscription;
 
     public function updateStatus(Subscription $subscription, SubscriptionStatus $status): Subscription;
+
+    public function startCheckout(User $user, Plan $plan): Subscription;
+
+    public function attachGatewayReference(Subscription $subscription, string $reference): Subscription;
+
+    public function applyPaymentEvent(PaymentEventResult $result): void;
 }

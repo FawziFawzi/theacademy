@@ -15,4 +15,8 @@ interface TransactionRepositoryInterface
     public function create(array $data): Transaction;
 
     public function updateStatus(Transaction $transaction, TransactionStatus $status): Transaction;
+
+    public function findByGatewayEventId(string $eventId): ?Transaction;
+
+    public function findByGatewayReference(string $reference): ?Transaction;
 }

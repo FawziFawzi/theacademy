@@ -53,4 +53,9 @@ class EloquentSubscriptionRepository implements SubscriptionRepositoryInterface
             ->where('status', SubscriptionStatus::Active)
             ->get();
     }
+
+    public function findByGatewayReference(string $reference): ?Subscription
+    {
+        return $this->query()->where('stripe_session_id', $reference)->first();
+    }
 }

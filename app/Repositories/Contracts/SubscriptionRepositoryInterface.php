@@ -17,4 +17,6 @@ interface SubscriptionRepositoryInterface
     public function updateStatus(Subscription $subscription, SubscriptionStatus $status): Subscription;
 
     public function activeForUser(int $userId): Collection;
+
+    public function findByGatewayReference(string $reference): ?Subscription;
 }

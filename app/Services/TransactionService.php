@@ -43,6 +43,20 @@ class TransactionService implements TransactionServiceInterface
         return $this->transactions->updateStatus($transaction, $status);
     }
 
+    public function recordGatewayPayment(Subscription $subscription, float $amount, TransactionStatus $status, array $gatewayData = []): Transaction
+    {
+        $transaction = $this->transactions->create(array_merge([
+            'subscription_id' => $subscription->id,
+            'type' => TransactionType::SubscriptionPayment,
+            'amount' => $amount,
+            'status' => $status,
+        ], $gatewayData));
+
+        $this->invoices->createForTransaction($transaction);
+
+        return $transaction;
+    }
+
     private function record(Subscription $subscription, TransactionType $type, float $amount): Transaction
     {
         $transaction = $this->transactions->create([

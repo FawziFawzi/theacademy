@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Fillable(['subscription_id', 'type', 'amount', 'status'])]
+#[Fillable(['subscription_id', 'type', 'amount', 'status', 'stripe_session_id', 'stripe_payment_intent', 'gateway_event_id'])]
 class Transaction extends Model
 {
     /** @use HasFactory<TransactionFactory> */

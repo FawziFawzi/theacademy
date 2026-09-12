@@ -24,6 +24,7 @@ use App\Services\Contracts\CourseServiceInterface;
 use App\Services\Contracts\InvoicePdfServiceInterface;
 use App\Services\Contracts\InvoiceServiceInterface;
 use App\Services\Contracts\OrganizationServiceInterface;
+use App\Services\Contracts\PaymentGatewayInterface;
 use App\Services\Contracts\PlanServiceInterface;
 use App\Services\Contracts\SubscriptionServiceInterface;
 use App\Services\Contracts\TransactionServiceInterface;
@@ -33,10 +34,12 @@ use App\Services\InvoicePdfService;
 use App\Services\InvoiceService;
 use App\Services\OrganizationService;
 use App\Services\PlanService;
+use App\Services\StripeService;
 use App\Services\SubscriptionService;
 use App\Services\TransactionService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
+use Stripe\StripeClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -63,6 +66,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(InvoiceServiceInterface::class, InvoiceService::class);
         $this->app->bind(InvoicePdfServiceInterface::class, InvoicePdfService::class);
         $this->app->bind(AuditLogServiceInterface::class, AuditLogService::class);
+        $this->app->bind(PaymentGatewayInterface::class, StripeService::class);
+
+        $this->app->singleton(StripeClient::class, function () {
+            $secret = config('stripe.secret');
+            if (empty($secret)) {
+                $secret = 'sk_test_dummy_for_local';
+            }
+
+            return new StripeClient($secret);
+        });
     }
 
     /**

@@ -45,4 +45,14 @@ class EloquentTransactionRepository implements TransactionRepositoryInterface
 
         return $transaction;
     }
+
+    public function findByGatewayEventId(string $eventId): ?Transaction
+    {
+        return $this->query()->where('gateway_event_id', $eventId)->first();
+    }
+
+    public function findByGatewayReference(string $reference): ?Transaction
+    {
+        return $this->query()->where('stripe_session_id', $reference)->first();
+    }
 }

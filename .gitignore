@@ -8,6 +8,7 @@
 /.codex
 /.cursor/
 /.idea
+/.secrets
 /.nova
 /.phpunit.cache
 /.vscode

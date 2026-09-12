@@ -15,6 +15,9 @@
                 <div class="flex justify-between"><dt class="label">Student</dt><dd class="text-ink">{{ $subscription->user?->name }}</dd></div>
                 <div class="flex justify-between"><dt class="label">Status</dt><dd><x-status-pill :status="$subscription->status" /></dd></div>
                 <div class="flex justify-between"><dt class="label">Period</dt><dd class="tabular-nums text-ink-muted">{{ $subscription->current_period_start?->format('Y-m-d') }} → {{ $subscription->current_period_end?->format('Y-m-d') }}</dd></div>
+                @if($subscription->stripe_session_id)
+                    <div class="flex justify-between"><dt class="label">Stripe session</dt><dd class="tabular-nums text-xs text-ink-muted">{{ $subscription->stripe_session_id }}</dd></div>
+                @endif
             </dl>
             <div class="flex items-center gap-3 mt-6">
                 <a href="{{ route('subscriptions.index') }}" class="btn btn-tertiary">Back</a>

@@ -54,7 +54,7 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 
 ### Phase 8 — Payments & PDFs (§2)
 - [x] **T13 — PDF invoices**: dompdf invoice generation wired to completed transactions.
-- [ ] **T14 — Stripe integration**: `stripe/stripe-php`, checkout + webhook with 3-attempt retry (deferred until after everything above is reviewed).
+- [x] **T14 — Payment Gateway Integration**: gateway-agnostic `PaymentGatewayInterface` with `StripeService` bound implementation (`stripe/stripe-php`), DTOs, checkout + webhook, no Stripe types leak beyond `StripeService`.
 
 ### Phase 9 — Verification (§12)
 - [ ] **T15 — Tests**: feature tests through Services/Repositories (tenancy scoping, role guards, subscription lifecycle), `migrate:fresh --seed` sanity run, full suite green.
@@ -76,3 +76,4 @@ Multi-tenant course subscription SaaS (Laravel + Breeze + Blade). Single source 
 | T11 | complete | 2026-08-22 |
 | T12 | complete | 2026-08-23 |
 | T13 | complete | 2026-08-23 |
+| T14 | complete | 2026-09-02 |

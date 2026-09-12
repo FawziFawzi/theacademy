@@ -18,4 +18,6 @@ interface TransactionServiceInterface
     public function recordRefund(Subscription $subscription, float $amount): Transaction;
 
     public function updateStatus(Transaction $transaction, TransactionStatus $status): Transaction;
+
+    public function recordGatewayPayment(Subscription $subscription, float $amount, TransactionStatus $status, array $gatewayData = []): Transaction;
 }
