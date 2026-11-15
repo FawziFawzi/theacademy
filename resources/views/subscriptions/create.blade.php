@@ -1,45 +1,56 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="page-title">New subscription</h2>
-    </x-slot>
+    <x-form-shell
+        :backHref="route('subscriptions.index')"
+        backLabel="Back to Subscriptions"
+        title="New subscription"
+        subtitle="Subscribe to a plan — directly for testing, or via Stripe Checkout."
+        badge="Ready to Subscribe"
+    >
+        <div class="space-y-8">
+            <div class="space-y-6">
+                <x-form-section
+                    title="Direct Subscribe"
+                    subtitle="Creates subscription + transaction immediately (non-gateway, for testing)."
+                />
 
-    <div class="grid lg:grid-cols-2 gap-6">
-        <div class="card p-6">
-            <h3 class="section-heading mb-4">Direct subscribe</h3>
-            <p class="text-sm text-ink-muted mb-4">Creates subscription + transaction immediately (non-gateway, for testing).</p>
-            <form method="POST" action="{{ route('subscriptions.store') }}">
-                @csrf
-                <p>
-                    <label class="label">Plan
-                        <select name="plan_id" class="mt-2 w-full rounded-card border border-line bg-surface-raised px-3 py-2">
+                <form method="POST" action="{{ route('subscriptions.store') }}" class="space-y-6">
+                    @csrf
+                    <x-form-row for="plan_id" label="Plan" :required="true">
+                        <select id="plan_id" name="plan_id" required class="field-input">
                             @foreach ($plans as $plan)
                                 <option value="{{ $plan->id }}">{{ $plan->name }} — ${{ number_format($plan->price, 2) }} / {{ $plan->billing_interval->label() }}</option>
                             @endforeach
                         </select>
-                    </label>
-                </p>
-                <p class="mt-4"><button type="submit" class="btn btn-tertiary w-full">Subscribe directly</button></p>
-            </form>
-        </div>
+                        <x-input-error :messages="$errors->get('plan_id')" class="mt-2" />
+                    </x-form-row>
+                    <div class="pt-2 flex sm:justify-end">
+                        <button type="submit" class="btn btn-secondary w-full sm:w-auto">Subscribe directly</button>
+                    </div>
+                </form>
+            </div>
 
-        <div class="card p-6">
-            <h3 class="section-heading mb-4">Pay with Stripe</h3>
-            <p class="text-sm text-ink-muted mb-4">Redirects to Stripe Checkout; webhook confirms payment.</p>
-            <form id="payment-checkout-form" method="POST" onsubmit="event.preventDefault(); const id=document.getElementById('payment_plan_id').value; this.action='{{ url('payment/checkout') }}/'+id; this.submit();">
-                @csrf
-                <p>
-                    <label class="label">Plan
-                        <select id="payment_plan_id" name="plan_id" class="mt-2 w-full rounded-card border border-line bg-surface-raised px-3 py-2">
+            <div class="space-y-6 pt-2 border-t border-line">
+                <div class="pt-6">
+                    <x-form-section
+                        title="Pay with Stripe"
+                        subtitle="Redirects to Stripe Checkout; webhook confirms payment."
+                    />
+                </div>
+
+                <form id="payment-checkout-form" method="POST" onsubmit="event.preventDefault(); const id=document.getElementById('payment_plan_id').value; this.action='{{ url('payment/checkout') }}/'+id; this.submit();" class="space-y-6">
+                    @csrf
+                    <x-form-row for="payment_plan_id" label="Plan" :required="true">
+                        <select id="payment_plan_id" name="plan_id" required class="field-input">
                             @foreach ($plans as $plan)
                                 <option value="{{ $plan->id }}">{{ $plan->name }} — ${{ number_format($plan->price, 2) }} / {{ $plan->billing_interval->label() }}</option>
                             @endforeach
                         </select>
-                    </label>
-                </p>
-                <p class="mt-4"><button type="submit" class="btn btn-primary w-full">Checkout with Stripe</button></p>
-            </form>
+                    </x-form-row>
+                    <div class="pt-2 flex sm:justify-end">
+                        <button type="submit" class="btn btn-primary w-full sm:w-auto">Checkout with Stripe</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-
-    <p class="mt-6"><a href="{{ route('subscriptions.index') }}" class="btn btn-tertiary">Back</a></p>
+    </x-form-shell>
 </x-app-layout>

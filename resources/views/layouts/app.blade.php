@@ -62,14 +62,28 @@
                         @endauth
                     </div>
 
-                    {{-- Right: avatar + dropdown --}}
+                    {{-- Right: org badge + avatar + dropdown --}}
                     <div class="flex items-center gap-3">
                         @auth
                         @php
                             $u = auth()->user();
                             $initials = collect(explode(' ', trim($u->name ?? '')))->filter()->map(fn($p) => mb_strtoupper(mb_substr($p, 0, 1)))->take(2)->implode('');
                             if ($initials === '') $initials = mb_strtoupper(mb_substr($u->email ?? 'U', 0, 1));
+                            $orgName = $u->relationLoaded('organization') ? $u->organization?->name : $u->organization()->pluck('name')->first();
+                            $showOrg = ($u->role?->value ?? null) !== 'system_admin' && ! empty($orgName);
                         @endphp
+                        @if($showOrg)
+                        <div class="flex items-center gap-2 px-3 py-1.5 rounded-card bg-surface-raised border border-line text-xs text-ink" aria-label="Current organization">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="w-2 h-2 rounded-full bg-accent animate-pulse shrink-0" aria-hidden="true"></span>
+                                <svg class="w-3.5 h-3.5 text-ink-muted shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                </svg>
+                                <span class="font-medium text-ink max-w-[130px] sm:max-w-[200px] truncate" title="{{ $orgName }}">{{ $orgName }}</span>
+                            </div>
+                            <span class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-accent-soft text-accent border border-accent/20">Tenant</span>
+                        </div>
+                        @endif
                         <div class="hidden sm:flex sm:items-center">
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
@@ -134,6 +148,12 @@
                         <div class="px-3 py-2">
                             <p class="text-sm font-medium text-ink">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-ink-muted truncate">{{ auth()->user()->email }}</p>
+                            @if(($u->role?->value ?? null) !== 'system_admin' && ! empty($orgName))
+                            <p class="mt-1 inline-flex items-center gap-1.5 text-xs text-ink-muted">
+                                <span class="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+                                <span class="truncate">{{ $orgName }}</span>
+                            </p>
+                            @endif
                         </div>
                         <x-responsive-nav-link :href="route('profile.edit')">{{ __('Profile') }}</x-responsive-nav-link>
                         <form method="POST" action="{{ route('logout') }}">
