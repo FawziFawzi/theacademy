@@ -14,7 +14,11 @@ class EloquentOrganizationRepository implements OrganizationRepositoryInterface
 
     private function query(): Builder
     {
-        return $this->tenancy->scope(Organization::query());
+        if (! $this->tenancy->isScoped()) {
+            return Organization::query();
+        }
+
+        return Organization::query()->whereKey($this->tenancy->organizationId());
     }
 
     public function find(int $id): ?Organization
