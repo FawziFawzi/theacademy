@@ -19,4 +19,11 @@ interface TransactionRepositoryInterface
     public function findByGatewayEventId(string $eventId): ?Transaction;
 
     public function findByGatewayReference(string $reference): ?Transaction;
+
+    /**
+     * Determine whether a completed subscription payment already exists for the
+     * subscription, so multiple Stripe events for the same payment
+     * (checkout.session.completed + payment_intent.succeeded) do not record it twice.
+     */
+    public function hasCompletedSubscriptionPayment(int $subscriptionId): bool;
 }

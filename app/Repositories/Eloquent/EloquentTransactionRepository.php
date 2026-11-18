@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Enums\TransactionStatus;
+use App\Enums\TransactionType;
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionRepositoryInterface;
 use App\Repositories\TenantContext;
@@ -54,5 +55,14 @@ class EloquentTransactionRepository implements TransactionRepositoryInterface
     public function findByGatewayReference(string $reference): ?Transaction
     {
         return $this->query()->where('stripe_session_id', $reference)->first();
+    }
+
+    public function hasCompletedSubscriptionPayment(int $subscriptionId): bool
+    {
+        return $this->query()
+            ->where('subscription_id', $subscriptionId)
+            ->where('type', TransactionType::SubscriptionPayment)
+            ->where('status', TransactionStatus::Completed)
+            ->exists();
     }
 }

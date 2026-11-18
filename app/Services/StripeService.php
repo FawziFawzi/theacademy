@@ -44,6 +44,14 @@ class StripeService implements PaymentGatewayInterface
             'metadata' => [
                 'subscription_id' => (string) $subscription->id,
             ],
+            // Propagate the subscription id to the PaymentIntent too: Stripe only
+            // sends the session id on checkout.session events, while
+            // payment_intent.succeeded carries the pi_* object id.
+            'payment_intent_data' => [
+                'metadata' => [
+                    'subscription_id' => (string) $subscription->id,
+                ],
+            ],
         ]);
 
         return new PaymentInitiationResult(
@@ -101,7 +109,9 @@ class StripeService implements PaymentGatewayInterface
         $raw = $event->toArray();
 
         $outcome = match ($type) {
-            'checkout.session.completed' => PaymentEventOutcome::Completed,
+            'checkout.session.completed',
+            'checkout.session.async_payment_succeeded',
+            'payment_intent.succeeded' => PaymentEventOutcome::Completed,
             'checkout.session.expired',
             'checkout.session.async_payment_failed',
             'payment_intent.payment_failed' => PaymentEventOutcome::Failed,
@@ -110,19 +120,17 @@ class StripeService implements PaymentGatewayInterface
 
         $object = $event->data->object ?? null;
 
+        // The gateway reference is the Stripe object id of the event: cs_* for
+        // checkout.session events (matches subscriptions.stripe_session_id) and
+        // pi_* for payment_intent events. Payment intents are correlated back to
+        // the subscription through the metadata.subscription_id fallback.
         $gatewayReference = '';
         if (is_object($object)) {
             $gatewayReference = $object->id ?? '';
-            // For payment_intent events, reference still the session/payment_intent id
-            if (empty($gatewayReference) && isset($object->payment_intent)) {
-                $gatewayReference = is_string($object->payment_intent) ? $object->payment_intent : ($object->payment_intent->id ?? '');
-            }
         } elseif (is_array($object)) {
             $gatewayReference = $object['id'] ?? '';
         }
 
-        // Fallback to metadata subscription_id if needed? Keep gatewayReference as stripe object id
-        // Subscription lookup will use stripe_session_id, so session id is the reference
         return new PaymentEventResult(
             outcome: $outcome,
             gatewayReference: (string) $gatewayReference,

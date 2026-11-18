@@ -53,7 +53,7 @@
                                 </x-nav-link>
                             @endif
 
-                            @if(in_array(auth()->user()->role?->value, ['org_admin','student']))
+                            @if(in_array(auth()->user()->role?->value, ['org_admin','student','system_admin']))
                                 <x-nav-link :href="route('subscriptions.index')" :active="request()->routeIs('subscriptions.*')">
                                     {{ __('Subscriptions') }}
                                 </x-nav-link>
@@ -141,7 +141,7 @@
                         <x-responsive-nav-link :href="route('plans.index')" :active="request()->routeIs('plans.*')">{{ __('Plans') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">{{ __('Users') }}</x-responsive-nav-link>
                     @endif
-                    @if(in_array(auth()->user()->role?->value, ['org_admin','student']))
+                    @if(in_array(auth()->user()->role?->value, ['org_admin','student','system_admin']))
                         <x-responsive-nav-link :href="route('subscriptions.index')" :active="request()->routeIs('subscriptions.*')">{{ __('Subscriptions') }}</x-responsive-nav-link>
                     @endif
                     <div class="pt-3 mt-3 border-t border-line space-y-1">

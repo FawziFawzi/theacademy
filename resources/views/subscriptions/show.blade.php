@@ -11,6 +11,7 @@
             <h3 class="section-heading mb-4">Details</h3>
             <dl class="space-y-3 text-sm">
                 <div class="flex justify-between"><dt class="label">Plan</dt><dd class="font-medium text-ink">{{ $subscription->plan?->name ?? '—' }}</dd></div>
+                <div class="flex justify-between"><dt class="label">Organization</dt><dd class="text-ink">{{ $subscription->plan?->organization?->name ?? '—' }}</dd></div>
                 <div class="flex justify-between"><dt class="label">Price</dt><dd class="tabular-nums font-medium">${{ number_format($subscription->plan?->price ?? 0, 2) }}</dd></div>
                 <div class="flex justify-between"><dt class="label">Student</dt><dd class="text-ink">{{ $subscription->user?->name }}</dd></div>
                 <div class="flex justify-between"><dt class="label">Status</dt><dd><x-status-pill :status="$subscription->status" /></dd></div>
@@ -21,10 +22,18 @@
             </dl>
             <div class="flex items-center gap-3 mt-6">
                 <a href="{{ route('subscriptions.index') }}" class="btn btn-tertiary">Back</a>
-                @if(in_array($subscription->status->value, ['active','trialing']))
+                @if(auth()->user()->role?->value === 'student' && in_array($subscription->status->value, ['active','trialing']))
                     <form method="POST" action="{{ route('subscriptions.cancel', $subscription) }}">
                         @csrf
                         <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                @endif
+                @if(auth()->user()->role?->value === 'system_admin')
+                    <a href="{{ route('subscriptions.edit', $subscription) }}" class="btn btn-secondary">Edit</a>
+                    <form method="POST" action="{{ route('subscriptions.destroy', $subscription) }}" onsubmit="return confirm('Delete this subscription permanently?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 @endif
             </div>

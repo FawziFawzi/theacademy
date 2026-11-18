@@ -26,17 +26,29 @@ class EloquentSubscriptionRepository implements SubscriptionRepositoryInterface
 
     public function find(int $id): ?Subscription
     {
-        return $this->query()->find($id);
+        return $this->query()->with(['plan.organization', 'user'])->find($id);
     }
 
     public function all(): Collection
     {
-        return $this->query()->orderByDesc('created_at')->get();
+        return $this->query()->with(['plan.organization', 'user'])->orderByDesc('created_at')->get();
     }
 
     public function create(array $data): Subscription
     {
         return Subscription::create($data);
+    }
+
+    public function update(Subscription $subscription, array $data): Subscription
+    {
+        $subscription->update($data);
+
+        return $subscription;
+    }
+
+    public function delete(Subscription $subscription): bool
+    {
+        return (bool) $subscription->delete();
     }
 
     public function updateStatus(Subscription $subscription, SubscriptionStatus $status): Subscription
@@ -51,6 +63,15 @@ class EloquentSubscriptionRepository implements SubscriptionRepositoryInterface
         return $this->query()
             ->where('user_id', $userId)
             ->where('status', SubscriptionStatus::Active)
+            ->get();
+    }
+
+    public function forUser(int $userId): Collection
+    {
+        return $this->query()
+            ->with(['plan.organization', 'user'])
+            ->where('user_id', $userId)
+            ->orderByDesc('created_at')
             ->get();
     }
 
